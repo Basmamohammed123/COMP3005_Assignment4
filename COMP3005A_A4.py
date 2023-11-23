@@ -1,8 +1,23 @@
 import psycopg2
 
+dbname = 'new_database'
+user = 'postgres'
+password = 'Basma2002'
+host = 'localhost' 
+port = '5432'
+
+def create_database():
+    auto_commit = psycopg2.extensions.ISOLATION_LEVEL_AUTOCOMMIT
+    connection = psycopg2.connect(user=user, password=password, host=host, port=port)
+    connection.set_isolation_level(auto_commit)
+    cursor = connection.cursor() # Create cursor object 
+    cursor.execute("CREATE database " + dbname) # Create database
+    connection.commit() # Saves changes
+    connection.close() # Closes the connection
+    
 def create_student_table():
     # Connect to the PostgreSQL
-    connection = psycopg2.connect('dbname=class user=postgres password=Basma2002 host=localhost port=5432')
+    connection = psycopg2.connect(dbname=dbname, user=user, password=password, host=host, port=port)
     cursor = connection.cursor() # Create cursor object 
     
     table_to_create = """
@@ -19,7 +34,7 @@ def create_student_table():
     connection.close() # Closes the connection
 
 def getAllStudents():
-    connection = psycopg2.connect('dbname=class user=postgres password=Basma2002 host=localhost port=5432')
+    connection = psycopg2.connect(dbname=dbname, user=user, password=password, host=host, port=port)
     
     cursor = connection.cursor() # Create cursor object 
     cursor.execute("SELECT * FROM students") # Retrieves everything in students table
@@ -29,7 +44,7 @@ def getAllStudents():
     connection.close() # Closes the connection
     
 def addStudent(first_name, last_name, email, enrollment_date):
-    connection = psycopg2.connect('dbname=class user=postgres password=Basma2002 host=localhost port=5432')
+    connection = psycopg2.connect(dbname=dbname, user=user, password=password, host=host, port=port)
     cursor = connection.cursor() # Create cursor object 
     cursor.execute("""
             INSERT INTO students (first_name, last_name, email, enrollment_date)
@@ -39,7 +54,7 @@ def addStudent(first_name, last_name, email, enrollment_date):
     connection.close()
 
 def updateStudentEmail(student_id, new_email):
-    connection = psycopg2.connect('dbname=class user=postgres password=Basma2002 host=localhost port=5432')
+    connection = psycopg2.connect(dbname=dbname, user=user, password=password, host=host, port=port)
     cursor = connection.cursor() # Create cursor object 
     cursor.execute("""
             UPDATE students
@@ -50,26 +65,8 @@ def updateStudentEmail(student_id, new_email):
     connection.close()
 
 def deleteStudent(student_id):
-    connection = psycopg2.connect('dbname=class user=postgres password=Basma2002 host=localhost port=5432')
+    connection = psycopg2.connect(dbname=dbname, user=user, password=password, host=host, port=port)
     cursor = connection.cursor() # Create cursor object 
     cursor.execute("DELETE FROM students WHERE student_id = %s", (student_id,))
     connection.commit()
     connection.close()
-
-if __name__ == "__main__":
-    create_student_table() # Creates students table
-
-    # Insert a new students
-    addStudent('John', 'Doe', 'john.doe@example.com', '2023-09-01')
-    addStudent('Jane', 'Smith', 'jane.smith@example.com', '2023-09-01')
-    addStudent('Jim', 'Beam', 'jim.beam@example.com', '2023-09-02')
-    getAllStudents()
-
-    #Update the email of the first student
-    updateStudentEmail(1, 'john@example.com')
-    getAllStudents()    
-    
-    #Deletes the record of the student with the specified_id
-    deleteStudent(1)
-    getAllStudents()
-    
