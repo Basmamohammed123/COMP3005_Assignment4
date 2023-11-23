@@ -1,7 +1,7 @@
 # COMP3005_Assignment4
 
 To be able to connect to your PostgreSQL, you must first change the following variables
-to match with the information of your PostgreSQL: dbname, user, password, host, port
+to match with the information of your PostgreSQL: user, password, host, port
 
 def create_database(): Creates new database
 
