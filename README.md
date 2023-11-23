@@ -1,4 +1,4 @@
-# COMP3005_Assignment4
+# COMP3005 Assignment4
 
 To be able to connect to your PostgreSQL, you must first change the following variables
 to match with the information of your PostgreSQL: user, password, host, port
